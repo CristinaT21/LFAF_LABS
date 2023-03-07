@@ -121,6 +121,72 @@ Here, I created a function to classify the grammar type.
         return Grammar(VN, VT, P, S_prime)
 ```
 This function converts the finite automaton to regular grammar.
+```
+    def is_deterministic(self):
+        # Create a set to keep track of the next states for each state and input symbol
+        next_states = set()
+        # Iterate over all transitions
+        for state in self.Q:
+            for symbol in self.Sigma:
+                # Check if there is already a transition for the same state and input symbol
+                if (state, symbol) in next_states:
+                    return False
+                else:
+                    # Add the current transition to the set of next states
+                    next_states.add((state, symbol))
 
+        # If no duplicate transitions were found, the automaton is deterministic
+        return True
+```
+This function returns True is the finite automaton is deterministic.
+```
+    def nfa_to_dfa(self):
+        alphabet = set()
+        for transitions in self.delta.values():
+            alphabet.update(transitions.keys())
 
+        start_state = self.q0
+        dfa_states = [set([start_state])]
+        dfa_transitions = {}
+        unmarked_states = [0]
+
+        while unmarked_states:
+            index = unmarked_states.pop()
+            current_state = dfa_states[index]
+
+            for symbol in alphabet:
+                next_state = set()
+                for nfa_state in current_state:
+                    if nfa_state in self.Q:
+                        if symbol in self.delta[nfa_state]:
+                            next_nfa_states = self.delta[nfa_state][symbol]
+                        else:
+                            next_nfa_states = set()
+                    else:
+                        next_nfa_states = set()
+                    next_state.update(next_nfa_states)
+
+                if next_state:
+                    next_state = set(next_state)
+                    if next_state not in dfa_states:
+                        dfa_states.append(next_state)
+                        unmarked_states.append(len(dfa_states) - 1)
+
+                    current_symbol_transitions = dfa_transitions.get(index, {})
+                    current_symbol_transitions[symbol] = dfa_states.index(next_state)
+                    dfa_transitions[index] = current_symbol_transitions
+
+        dfa_final_states = set()
+        for i, state in enumerate(dfa_states):
+            if state.intersection(self.F):
+                dfa_final_states.add(i)
+
+        return dfa_states, alphabet, dfa_transitions, 0, dfa_final_states
+```
+The function above converts a NFA to DFA.
 ## Results
+![img.png](../images/1.png)
+![img.png](../images/2.png)
+![img.png](../images/3.png)
+![img.png](../images/4.png)
+![img.png](../images/5.png)

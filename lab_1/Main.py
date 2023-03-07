@@ -39,17 +39,23 @@ if __name__ == '__main__':
 
     print('5 valid strings:')
     print(string_list)
-
+    print('\nGrammar type:')
     print(grammar.classify_grammar())
 
     finite_automaton: FiniteAutomaton = FiniteAutomaton(Q=Q, Sigma=Sigma, delta=delta, q0=q0, F=F)
     gr = finite_automaton.to_regular_grammar()
-    print(f'Start is {gr.S}, terminals are {gr.VT}, non-terminals are {gr.VN}, the production is {gr.P}')
+    print('\nFrom finite automaton to regular grammar:')
+    print(f'Start is {gr.S},\n terminals are {gr.VT},\n non-terminals are {gr.VN},\n'
+          f' the production is {gr.P}')
     fa = grammar.toFiniteAutomaton()
-    print(f'Start is {fa.q0}, the states are {fa.Q}, the alphabet is {fa.Sigma}, the transitions are {fa.delta}, the final state is {fa.F}')
-
-    finite_automaton.nfa_to_dfa()
-
+    print('\nFrom grammar to finite automaton')
+    print(f'Start is {fa.q0},\n the states are {fa.Q},\n the alphabet is {fa.Sigma},\n'
+          f' the transitions are {fa.delta},\n the final state is {fa.F}')
+    print('\nFinite Automaton is deterministic: ')
+    print(finite_automaton.is_deterministic())
+    print('\nFrom NFA to DFA:')
+    print(finite_automaton.nfa_to_dfa())
+    print('\n')
 
     for i in range(2):
         word: str = input('Enter a word to check if it corresponds to the grammar rules: ')

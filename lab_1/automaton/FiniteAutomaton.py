@@ -47,6 +47,22 @@ class FiniteAutomaton:
 
         return Grammar(VN, VT, P, S_prime)
 
+    def is_deterministic(self):
+        # Create a set to keep track of the next states for each state and input symbol
+        next_states = set()
+        # Iterate over all transitions
+        for state in self.Q:
+            for symbol in self.Sigma:
+                # Check if there is already a transition for the same state and input symbol
+                if (state, symbol) in next_states:
+                    return False
+                else:
+                    # Add the current transition to the set of next states
+                    next_states.add((state, symbol))
+
+        # If no duplicate transitions were found, the automaton is deterministic
+        return True
+
     def nfa_to_dfa(self):
         alphabet = set()
         for transitions in self.delta.values():
@@ -64,9 +80,9 @@ class FiniteAutomaton:
             for symbol in alphabet:
                 next_state = set()
                 for nfa_state in current_state:
-                    if nfa_state in self.q0:
-                        if symbol in self[nfa_state]:
-                            next_nfa_states = self[nfa_state][symbol]
+                    if nfa_state in self.Q:
+                        if symbol in self.delta[nfa_state]:
+                            next_nfa_states = self.delta[nfa_state][symbol]
                         else:
                             next_nfa_states = set()
                     else:
