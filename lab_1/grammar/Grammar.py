@@ -48,3 +48,56 @@ class Grammar(FiniteAutomaton):
             delta[state] = transitions
         delta['END'] = {'END': ''}
         return delta
+
+
+    def classify_grammar(self):
+        unrestricted = True
+        context_sensitive = True
+        context_free = True
+        regular = True
+        regular_left = True
+        regular_right = True
+
+        for state, productions in self.P.items():
+            for production in productions:
+                # check if the grammar exist
+                for char in production:
+                    if char not in self.VT + self.VN:
+                        unrestricted, context_sensitive, context_free, regular, regular_left, regular_right = False
+                        return f"The {char} does not belong to this grammar."
+
+                for char in state:
+                    if char not in self.VT + self.VN:
+                        unrestricted, context_sensitive, context_free, regular, regular_left, regular_right = False
+                        return f"The {char} is not in grammar"
+
+                # check if type 1 or 0
+                if (len(production) > 2 or len(state) > 1) and any([state_v in self.VN for state_v in state]):
+                    context_free, regular, regular_left, regular_right = False
+
+                # check type 1
+                if any([ch in self.VN for ch in state]):
+                    print("", end='')
+                else:
+                    context_sensitive, context_free, regular, regular_left, regular_right = False
+
+                # type 2 or 3
+                if len(production) <= 2 and len(state) == 1 and context_free:
+                    if any([char_r in self.VN or len(char_r) == 0 for char_r in [production[1:]]]):
+                        print("", end='')
+                    else:
+                        regular_right = False
+
+                    if any([char_l in self.VN or len(char_l) == 0 for char_l in [production[0:1]]]):
+                        print("", end='')
+                    else:
+                        regular_left = False
+
+        if regular_left or regular_right:
+            print(f"Regular(type 3)")
+        elif context_free:
+            print(f"Context-free(type 2)")
+        elif context_sensitive:
+            print(f"Context-sensitive(type 1)")
+        elif unrestricted:
+            print(f"Unrestricted(type 0)")
