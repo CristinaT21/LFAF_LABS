@@ -97,5 +97,17 @@ if __name__ == '__main__':
         print('\nFifth:')
         print(Lexer().tokenize(expression5))
 
+    elif lab_no == 4:
+        # lab 4
+        # To Chomsky Normal Form
+        P1 = {
+            "S": ["aBA", "AB"],
+            "A": ["d", "dS", "AbBA", "epsilon"],
+            "B": ["a", "aS", "A"],
+            "D": ["Aba"]
+        }
+        g: Grammar = Grammar(VN=["S", "A", "B", "D"], VT=["a", "b", "d"], P=P1, S='S')
+        print('\nGrammar in Chomsky Normal Form:')
+        g = g.toChomskyNormalForm()
     else:
-        print("Try the number 1 up to 3.")
+        print("Try the number 1 up to 4.")
