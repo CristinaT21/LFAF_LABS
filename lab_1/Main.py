@@ -110,6 +110,17 @@ if __name__ == '__main__':
         print('See each step:')
         
         print('\nGrammar in Chomsky Normal Form:')
-        g = g.toChomskyNormalForm()
+        g.eliminateEpsilonProductions()
+        print(g.P)
+        g.eliminateUnitProductions()
+        print(g.P)
+        g.eliminateInaccessibleSymbols()
+        print(g.P)
+        g.eliminateNonproductiveSymbols()
+        print(g.P)
+        g.eliminateLongProductions()
+        print(g.P)
+        #g.toChomskyNormalForm()
+        #g = g.toChomskyNormalForm()
     else:
         print("Try the number 1 up to 4.")

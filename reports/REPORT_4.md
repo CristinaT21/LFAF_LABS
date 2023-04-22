@@ -544,16 +544,20 @@ terminals and variables so that I can use it later on.
         terminal_and_variable = {}
 ```
 ---
-Here I am trying to check if the first variable is a terminal and the second is a variable. If it is
-then I am trying to check if the terminal has already been changed. If it has then I am trying to
-change the production to the new variable. If it hasn't then I am trying to change the production to
-the new variable and add the new variable to the list of terminals changed.
+For 2 variables in the production.
+Here I check if the first variable is a terminal and the second is a variable. If it is, I check if the
+terminal has already been changed. If it has, I change the production to the new variable. If it has
+not, I change the terminal to a variable and add it to the list of terminals changed.
+
 ```
-        elif production[0] in self.VT and production[1] in self.VN:
+                    if len(variables) == 2:
+                        # check if the first variable is a terminal and the second is a variable
+                        if production[0] in self.VT and production[1] in self.VN:
                             # check if the terminal has already been changed
                             if production[0] in list_of_terminals_changed:
-                                new_grammar.P[index] = [(terminal_and_variable[production[0]], production[1])]
-                                productions[index] = (new_grammar.P[index])
+                                new_grammar.P[state] = [(terminal_and_variable[production[0]], production[1])]
+                                productions[index] = (new_grammar.P[state])
+                            # if the terminal has not been changed, change it
                             else:
                                 var1 = variables.pop(0)  # removes the first variable from the list
                                 new_var = new_grammar.getNewVariable()
@@ -563,11 +567,71 @@ the new variable and add the new variable to the list of terminals changed.
                                 terminal_and_variable[var1] = [new_var]
                                 variables.insert(0, new_var)
                                 productions[index] = (tuple(variables))
+
 ```
+I do so for 3 more cases. The first case is if the first variable is a terminal and the second is a
+terminal. The second case is if the first variable is a variable and the second is a terminal. The 
+third case is if the first variable is a variable and the second is a variable. I am trying to check
+if the terminal has already been changed. If it has, I change the production to the new variable.
+If it has not, I change the terminal to a variable and add it to the list of terminals changed.
+----
+For 3 or more variables in the production.
+```
+                    elif len(production) > 2:
+                    # Replace with new variables and productions
+                    variables = list(production)
+                    while len(variables) > 2:
+                        print(variables,"variables")
+                        print(len(variables), "len")
+                        for i in range(len(variables)):
+                            if production[i] in self.VT and production[i] not in list_of_terminals_changed:
+                                var1 = variables.pop(i)
+                                new_var = new_grammar.getNewVariable()
+                                new_grammar.VN.add(new_var)
+                                new_grammar.P[new_var] = [(var1)]
+                                list_of_terminals_changed.append(var1)
+                                terminal_and_variable[var1] = [new_var]
+                                print(terminal_and_variable[var1], "terminal_and_variable")
+
+                                variables.insert(0, new_var)
+                                productions[index] = (tuple(variables))
+                            elif production[i] in self.VT and production[i] in list_of_terminals_changed:
+                                new_grammar.P[state] = [(terminal_and_variable[production[i]])]
+                                productions[index] = (new_grammar.P[state])
+                            # else:
+                            #     new_grammar.P[index] = [(terminal_and_variable[production[0]], production[1])]
+                        var1 = variables.pop(0)  # removes the first variable from the list
+                        var2 = variables.pop(0)  # removes the second variable from the list
+                        new_var = new_grammar.getNewVariable()
+                        new_grammar.VN.add(new_var)
+                        new_grammar.P[new_var] = [(var1, var2)]
+                        variables.insert(0, new_var)  # inserts the new variable at the beginning
+```
+---
+Here I add the new productions to the grammar and return the new grammar.
+```
+                    # adds a new production that uses the current state and the remaining variables
+                    productions[index] = (tuple(variables))
+                else:
+                    productions[index] = production  # add the production as is
+            new_grammar.P[state] = productions  # Update the grammar with the new productions
+        return new_grammar
+```
+```
+
 ---
 ## Test
 ```python
 ```
 
 ## Results
-#####![img.png](../images/lab3_1.png)
+![img.png](../images/lab4.png)
+![img_1.png](../images/lab4_1.png)
+![img_2.png](../images/lab4_2.png)
+![img_3.png](../images/lab4_3.png)
+![img_4.png](../images/lab4_4.png)
+![img_5.png](../images/lab4_5.png)
+![img_6.png](../images/lab4_6.png)
+![img_7.png](../images/lab4_7.png)
+![img_8.png](../images/lab4_8.png)
+![img_9.png](../images/lab4_9.png)
