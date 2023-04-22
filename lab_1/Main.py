@@ -107,6 +107,8 @@ if __name__ == '__main__':
             "D": ["Aba"]
         }
         g: Grammar = Grammar(VN=["S", "A", "B", "D"], VT=["a", "b", "d"], P=P1, S='S')
+        print('See each step:')
+        
         print('\nGrammar in Chomsky Normal Form:')
         g = g.toChomskyNormalForm()
     else:
