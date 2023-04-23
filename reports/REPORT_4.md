@@ -813,18 +813,27 @@ current production.
 elif production[0] in self.VN and production[1] in self.VN:
                             productions_copy[index] = (production)
 ```
-
-
-
-check if the production is a tuple or not. If it is a tuple, 
-I check if the first element of the tuple is a terminal or a variable.
-If it is a terminal, I check if the second element is a terminal or a variable. If it is a terminal, I check if the 
-terminal is in the list of terminals that were changed. If it is, I check if the new variable that was created for 
-that terminal is in the productions of the grammar. If it is, I add the new variable to the current production. If
-it is not, I create a new variable and I add it to the grammar. I add the new variable to the current production. If the terminal is not in the list of terminals that were changed, I create a new variable for that terminal and I add it to the list of terminals that were changed. I add the new variable to the current production. If the second element is a variable, I check if the first element is in the list of terminals that were changed. If it is, I check if the new variable that was created for that terminal is in the productions of the grammar. If it is, I add the new variable to the current production. If it is not, I create a new variable and I add it to the grammar. I add the new variable to the current production. If the terminal is not in the list of terminals that were changed, I create a new variable for that terminal and I add it to the list of terminals that were changed. I add the new variable to the current production. If the first element is a variable, I check if the second element is a terminal or a variable. If it is a terminal, I check if the terminal is in the list of terminals that were changed. If it is, I check if the new variable that was created for that terminal is in the productions of the grammar. If it is, I add the new variable to the current production. If it is not, I create a new variable and I add it to the grammar. I add the new variable to the current production. If the terminal is not in the list of terminals that were changed, I create a new variable for that terminal and I add it to the list of terminals that were changed. 
-I add the new variable to the current production. If the second element is a variable, I check if the first
+Then I continue with the case when the length of the production is more than 2. 
+I take the first two variables from the production to work with them.
+```angular2html
+while len(variables) > 2:
+  var1 = variables.pop(0)  # removes the first variable from the list
+  var2 = variables.pop(0)  # removes the second variable from the list
 ```
+First I check if the first variable(var1) is a terminal 
+* if the first terminal is changed (in list_of_terminals_changed)
+  * check if var2 is a variable
+    * check if a variable for var1(changed) and var2 exists
+      * if it exists, add it to the current production
+      * if it does not exist, create a new variable for var1 and var2 and add it to the current production
+  * check if var2 is a terminal
+    * if var2 in list_of_terminals_changed
+      * check if a variable for var1(changed) and var2(changed) exists
+         * if it exists, add it to the current production
+         * if it does not exist, create a new variable for var1 and var2 and add it to the current production
+    
 
+```angular2html
 ---
 ## Test
 ```python
