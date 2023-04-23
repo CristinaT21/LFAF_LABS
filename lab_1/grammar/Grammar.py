@@ -352,45 +352,43 @@ class Grammar(FiniteAutomaton):
                                 gata = False
                                 # for var1 terminal in list and var2 variable
                                 if var2 in new_grammar.VN:
-                                    for i in range(len(new_grammar.P)):
+                                    if gata == False:
+                                        keys = [k for k, v in new_grammar.P.items() if
+                                                v == [terminal_and_variable[var1], var2]]
+                                        if keys != []:
+                                            key = ''.join(keys)
+                                            variables.insert(0, key)
+                                            productions_copy[index] = key
+                                            gata = True
+                                        # if [terminal_and_variable[var1], var2] != list(new_grammar.P)[i]:
+                                        else:
+                                            new_var = new_grammar.getNewVariable()
+                                            new_grammar.VN.add(new_var)
+                                            new_grammar.P[new_var] = [terminal_and_variable[var1], var2]
+                                            variables.insert(0, new_var)
+                                            productions_copy[index] = (tuple(variables))
+                                            gata = True
+                                # for var1 terminal in list and var2 terminal
+                                elif var2 in new_grammar.VT:
+                                    if var2 in list_of_terminals_changed:
+                                        gata = False
                                         if gata == False:
                                             keys = [k for k, v in new_grammar.P.items() if
-                                                    v == [terminal_and_variable[var1], var2]]
+                                                    v == [terminal_and_variable[var1], terminal_and_variable[var2]]]
                                             if keys != []:
                                                 key = ''.join(keys)
                                                 variables.insert(0, key)
                                                 productions_copy[index] = key
                                                 gata = True
-                                            # if [terminal_and_variable[var1], var2] != list(new_grammar.P)[i]:
+
                                             else:
                                                 new_var = new_grammar.getNewVariable()
                                                 new_grammar.VN.add(new_var)
-                                                new_grammar.P[new_var] = [terminal_and_variable[var1], var2]
+                                                new_grammar.P[new_var] = [terminal_and_variable[var1],
+                                                                          terminal_and_variable[var2]]
                                                 variables.insert(0, new_var)
                                                 productions_copy[index] = (tuple(variables))
                                                 gata = True
-                                # for var1 terminal in list and var2 terminal
-                                elif var2 in new_grammar.VT:
-                                    if var2 in list_of_terminals_changed:
-                                        gata = False
-                                        for i in range(len(new_grammar.P)):
-                                            if gata == False:
-                                                keys = [k for k, v in new_grammar.P.items() if
-                                                        v == [terminal_and_variable[var1], terminal_and_variable[var2]]]
-                                                if keys != []:
-                                                    key = ''.join(keys)
-                                                    variables.insert(0, key)
-                                                    productions_copy[index] = key
-                                                    gata = True
-
-                                                else:
-                                                    new_var = new_grammar.getNewVariable()
-                                                    new_grammar.VN.add(new_var)
-                                                    new_grammar.P[new_var] = [terminal_and_variable[var1],
-                                                                              terminal_and_variable[var2]]
-                                                    variables.insert(0, new_var)
-                                                    productions_copy[index] = (tuple(variables))
-                                                    gata = True
                                     elif var2 not in list_of_terminals_changed:
                                         # change var2 with new variable
                                         new_var2 = new_grammar.getNewVariable()
@@ -421,38 +419,36 @@ class Grammar(FiniteAutomaton):
                                 gata = False
                                 # for var1 terminal not in list and var2 variable
                                 if var2 in new_grammar.VN:
-                                    for i in range(len(new_grammar.P)):
-                                        if gata == False:
-                                            # if var1 was not changed then there was no combination of var1 and var2
-                                            new_var = new_grammar.getNewVariable()
-                                            new_grammar.VN.add(new_var)
-                                            new_grammar.P[new_var] = [terminal_and_variable[var1], var2]
-                                            variables.insert(0, new_var)
-                                            productions_copy[index] = (tuple(variables))
-                                            gata = True
+                                    if gata == False:
+                                        # if var1 was not changed then there was no combination of var1 and var2
+                                        new_var = new_grammar.getNewVariable()
+                                        new_grammar.VN.add(new_var)
+                                        new_grammar.P[new_var] = [terminal_and_variable[var1], var2]
+                                        variables.insert(0, new_var)
+                                        productions_copy[index] = (tuple(variables))
+                                        gata = True
                                 # for var1 terminal not in list and var2 terminal
                                 elif var2 in new_grammar.VT:
                                     # var2 was changed
                                     if var2 in list_of_terminals_changed:
                                         gata = False
-                                        for i in range(len(new_grammar.P)):
-                                            if gata == False:
-                                                keys = [k for k, v in new_grammar.P.items() if
-                                                        v == [terminal_and_variable[var1], terminal_and_variable[var2]]]
-                                                if keys != []:
-                                                    key = ''.join(keys)
-                                                    variables.insert(0, key)
-                                                    productions_copy[index] = key
-                                                    gata = True
+                                        if gata == False:
+                                            keys = [k for k, v in new_grammar.P.items() if
+                                                    v == [terminal_and_variable[var1], terminal_and_variable[var2]]]
+                                            if keys != []:
+                                                key = ''.join(keys)
+                                                variables.insert(0, key)
+                                                productions_copy[index] = key
+                                                gata = True
 
-                                                else:
-                                                    new_var = new_grammar.getNewVariable()
-                                                    new_grammar.VN.add(new_var)
-                                                    new_grammar.P[new_var] = [terminal_and_variable[var1],
-                                                                              terminal_and_variable[var2]]
-                                                    variables.insert(0, new_var)
-                                                    productions_copy[index] = (tuple(variables))
-                                                    gata = True
+                                            else:
+                                                new_var = new_grammar.getNewVariable()
+                                                new_grammar.VN.add(new_var)
+                                                new_grammar.P[new_var] = [terminal_and_variable[var1],
+                                                                          terminal_and_variable[var2]]
+                                                variables.insert(0, new_var)
+                                                productions_copy[index] = (tuple(variables))
+                                                gata = True
                                     elif var2 not in list_of_terminals_changed:
                                         # change var2 with new variable
                                         new_var2 = new_grammar.getNewVariable()
@@ -475,42 +471,40 @@ class Grammar(FiniteAutomaton):
                             gata = False
                             # for var1 variable and var2 variable
                             if var2 in new_grammar.VN:
-                                for i in range(len(new_grammar.P)):
+                                if gata == False:
+                                    keys = [k for k, v in new_grammar.P.items() if
+                                            v == [var1, var2]]
+                                    if keys != []:
+                                        key = ''.join(keys)
+                                        variables.insert(0, key)
+                                        productions_copy[index] = key
+                                        gata = True
+
+                                    else:
+                                        new_var = new_grammar.getNewVariable()
+                                        new_grammar.VN.add(new_var)
+                                        new_grammar.P[new_var] = [var1, var2]
+                                        variables.insert(0, new_var)
+                                        productions_copy[index] = (tuple(variables))
+                                        gata = True
+                            if var2 in new_grammar.VT:
+                                if var2 in list_of_terminals_changed:
+                                    gata = False
                                     if gata == False:
-                                        keys = [k for k, v in new_grammar.P.items() if
-                                                v == [var1, var2]]
+                                        keys = [k for k, v in new_grammar.P.items() if v == [var1, terminal_and_variable[var2]]]
                                         if keys != []:
                                             key = ''.join(keys)
                                             variables.insert(0, key)
                                             productions_copy[index] = key
                                             gata = True
-
                                         else:
-                                            new_var = new_grammar.getNewVariable()
-                                            new_grammar.VN.add(new_var)
-                                            new_grammar.P[new_var] = [var1, var2]
-                                            variables.insert(0, new_var)
-                                            productions_copy[index] = (tuple(variables))
-                                            gata = True
-                            if var2 in new_grammar.VT:
-                                if var2 in list_of_terminals_changed:
-                                    gata = False
-                                    for i in range(len(new_grammar.P)):
-                                        if gata == False:
-                                            keys = [k for k, v in new_grammar.P.items() if v == [var1, terminal_and_variable[var2]]]
-                                            if keys != []:
-                                                key = ''.join(keys)
-                                                variables.insert(0, key)
-                                                productions_copy[index] = key
+                                            if gata == False:
+                                                new_var = new_grammar.getNewVariable()
+                                                new_grammar.VN.add(new_var)
+                                                new_grammar.P[new_var] = [var1, terminal_and_variable[var2]]
+                                                variables.insert(0, new_var)
+                                                productions_copy[index] = (tuple(variables))
                                                 gata = True
-                                            else:
-                                                if gata == False:
-                                                    new_var = new_grammar.getNewVariable()
-                                                    new_grammar.VN.add(new_var)
-                                                    new_grammar.P[new_var] = [var1, terminal_and_variable[var2]]
-                                                    variables.insert(0, new_var)
-                                                    productions_copy[index] = (tuple(variables))
-                                                    gata = True
                                 elif var2 not in list_of_terminals_changed:
                                     # change var2 with new variable
                                     new_var2 = new_grammar.getNewVariable()
@@ -527,7 +521,6 @@ class Grammar(FiniteAutomaton):
                                     variables.insert(0, new_var)
                                     productions_copy[index] = (tuple(variables))
                                     gata = True
-
                     # adds a new production that uses the current state and the remaining variables
                     productions_copy[index] = (tuple(variables))
                 else:
