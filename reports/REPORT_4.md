@@ -525,7 +525,6 @@ I update the grammar with the new set of productions and non-terminals.
                                                 variables.insert(0, key)
                                                 productions_copy[index] = key
                                                 gata = True
-                                            # if [terminal_and_variable[var1], var2] != list(new_grammar.P)[i]:
                                             else:
                                                 new_var = new_grammar.getNewVariable()
                                                 new_grammar.VN.add(new_var)
@@ -831,13 +830,80 @@ First I check if the first variable(var1) is a terminal
       * check if a variable for var1(changed) and var2(changed) exists
          * if it exists, add it to the current production
          * if it does not exist, create a new variable for var1 and var2 and add it to the current production
-    
+    * if var2 not in list_of_terminals_changed
+      * change var2
+        * create a new variable for var1(changed) and var2(changed) and add it to the current production
+* if the first terminal is not changed (not in list_of_terminals_changed)
+     * change var1
+     * check if var2 is a variable
+       * create a new variable for var1 and var2 and add it to the current production
+       (if var1 was not changed then there was no combination of var1 and var2)  
+     * check if var2 is a terminal
+       * if var2 in list_of_terminals_changed
+         * create a new variable for var1(changed) and var2(changed) and add it to the current production
+       * if var2 not in list_of_terminals_changed
+         * change var2
+           * create a new variable for var1(changed) and var2(changed) and add it to the current production
+Second I check if the first variable(var1) is a variable
+* if var2 is a variable
+  * check if a variable for var1 and var2 exists
+    * if it exists, add it to the current production
+    * if it does not exist, create a new variable for var1 and var2 and add it to the current production
+* if var2 is a terminal
+  * if var2 in list_of_terminals_changed
+    * check if a variable for var1 and var2(changed) exists
+      * if it exists, add it to the current production
+      * if it does not exist, create a new variable for var1 and var2(changed) and add it to the current production
+  * if var2 not in list_of_terminals_changed
+    * change var2
+      * create a new variable for var1 and var2(changed) and add it to the current production
 
+I won't paste the whole code because it is a lot.
+
+This is the way I check if a variable for var1 and var2 exists:
 ```angular2html
----
-## Test
-```python
+keys = [k for k, v in new_grammar.P.items() if v == [terminal_and_variable[var1], var2]]
+if keys != []:
+    key = ''.join(keys)
+    variables.insert(0, key)
+    productions_copy[index] = key
+    gata = True
+else:
+    new_var = new_grammar.getNewVariable()
+    new_grammar.VN.add(new_var)
+    new_grammar.P[new_var] = [terminal_and_variable[var1], var2]
+    variables.insert(0, new_var)
+    productions_copy[index] = (tuple(variables))
+    gata = True
 ```
+## Main class
+```angular2html 
+ P1 = {
+          "S": ["aBA", "AB"],
+          "A": ["d", "dS", "AbBA", "epsilon"],
+          "B": ["a", "aS", "A"],
+          "D": ["Aba"]
+      }
+      g: Grammar = Grammar(VN=["S", "A", "B", "D"], VT=["a", "b", "d"], P=P1, S='S')
+      opt_no = int(input("Enter 1 to see the final result or 2 to see each step: "))
+      if opt_no == 1:
+          print('\nGrammar in Chomsky Normal Form:')
+          g.toChomskyNormalForm()
+          print(g.P)
+      elif opt_no == 2:
+          print('See each step:')
+          g.eliminateEpsilonProductions()
+          print("Eliminate Epsilon Productions", g.P)
+          g.eliminateUnitProductions()
+          print("Eliminate Unit Productions", g.P)
+          g.eliminateInaccessibleSymbols()
+          print('Eliminate Inaccessible Symbols', g.P)
+          g.eliminateNonproductiveSymbols()
+          print('Eliminate Nonproductive Symbols', g.P)
+          g.eliminateLongProductions()
+          print('Eliminate Long Productions', g.P)
+```
+
 
 ## Results
 ![img.png](../images/lab4.png)

@@ -107,20 +107,22 @@ if __name__ == '__main__':
             "D": ["Aba"]
         }
         g: Grammar = Grammar(VN=["S", "A", "B", "D"], VT=["a", "b", "d"], P=P1, S='S')
-        print('See each step:')
-        
-        print('\nGrammar in Chomsky Normal Form:')
-        g.eliminateEpsilonProductions()
-        print(g.P)
-        g.eliminateUnitProductions()
-        print(g.P)
-        g.eliminateInaccessibleSymbols()
-        print(g.P)
-        g.eliminateNonproductiveSymbols()
-        print(g.P)
-        g.eliminateLongProductions()
-        print(g.P)
-        #g.toChomskyNormalForm()
-        #g = g.toChomskyNormalForm()
+        opt_no = int(input("Enter 1 to see the final result or 2 to see each step: "))
+        if opt_no == 1:
+            print('\nGrammar in Chomsky Normal Form:')
+            g.toChomskyNormalForm()
+            print(g.P)
+        elif opt_no == 2:
+            print('See each step:')
+            g.eliminateEpsilonProductions()
+            print("Eliminate Epsilon Productions", g.P)
+            g.eliminateUnitProductions()
+            print("Eliminate Unit Productions", g.P)
+            g.eliminateInaccessibleSymbols()
+            print('Eliminate Inaccessible Symbols', g.P)
+            g.eliminateNonproductiveSymbols()
+            print('Eliminate Nonproductive Symbols', g.P)
+            g.eliminateLongProductions()
+            print('Eliminate Long Productions', g.P)
     else:
         print("Try the number 1 up to 4.")
