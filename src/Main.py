@@ -1,8 +1,8 @@
-from lab_1.grammar.Grammar import Grammar
-from lab_1.automaton.FiniteAutomaton import FiniteAutomaton
+from src.grammar.Grammar import Grammar
+from src.automaton.FiniteAutomaton import FiniteAutomaton
 from automathon import DFA
 from PIL import Image
-from lab_1.lexer.lexer import Lexer
+from src.lexer.lexer import Lexer
 
 # Define the grammar
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     lab_no = int(input("Enter the lab you want to run: "))
     if lab_no == 1:
         grammar: Grammar = Grammar(VN=VN, VT=VT, P=P, S='S')
-        # lab_1
+        # src
         while len(string_list) < 6:
             string = grammar.generateWord()
             if string not in string_list:
@@ -43,13 +43,13 @@ if __name__ == '__main__':
 
         print('5 valid strings:')
         print(string_list)
-        # lab_1
+        # src
         fa = grammar.toFiniteAutomaton()
         print('\nFrom grammar to finite automaton')
         print(f'Start is {fa.q0},\n the states are {fa.Q},\n the alphabet is {fa.Sigma},\n'
               f' the transitions are {fa.delta},\n the final state is {fa.F}')
         print('\nFinite Automaton is deterministic: ')
-        # lab_1
+        # src
         for i in range(2):
             word: str = input('Enter a word to check if it corresponds to the grammar rules: ')
             print(fa.stringBelongToLanguage(word))
@@ -86,15 +86,15 @@ if __name__ == '__main__':
         expression4 = 'a != b;'
         expression5 = 'you = cool;'
 
-        print('First:')
+        print(f'First expression: {expression1}')
         print(Lexer().tokenize(expression1))
-        print('\nSecond:')
+        print(f'\nSecond expression: {expression2}:')
         print(Lexer().tokenize(expression2))
-        print('\nThird:')
+        print(f'\nThird expression: {expression3}:')
         print(Lexer().tokenize(expression3))
-        print('\nForth:')
+        print(f'\nForth expression: {expression4}:')
         print(Lexer().tokenize(expression4))
-        print('\nFifth:')
+        print(f'\nFifth expression: {expression5}:')
         print(Lexer().tokenize(expression5))
 
     elif lab_no == 4:

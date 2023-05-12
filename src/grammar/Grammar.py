@@ -1,5 +1,5 @@
 import random as r
-from lab_1.automaton.FiniteAutomaton import FiniteAutomaton
+from src.automaton.FiniteAutomaton import FiniteAutomaton
 
 
 class Grammar(FiniteAutomaton):

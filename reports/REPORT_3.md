@@ -16,99 +16,14 @@ The lexeme is just the byproduct of splitting based on delimiters, for example s
 
 ## Implementation description
 
-### Code snippets from Lexer class:
-
+In the Lexer class, I defined a dictionary of regular expressions that will be used to tokenize the input string.
+An example of some tokens:
 ```
-  class Lexer:
-  def __init__(self) -> object:
-      self.input_string = None
-      self.tokens_list = None
-      self.tokens = {
-          r'\bif\b': 'IF',
-          r'\belse\b': 'ELSE',
-          r'\bwhile\b': 'WHILE',
-          r'\btrue\b': 'TRUE',
-          r'\bfalse\b': 'FALSE',
-          r'\bnot\b': 'NOT',
-          r'\bor\b': 'OR',
-          r'\band\b': 'AND',
-          r'\(': 'LPAREN',
-          r'\)': 'RPAREN',
-          r'\{': 'LBRACE',
-          r'\}': 'RBRACE',
-          r';': 'SEMICOLON',
-          r'\+': 'PLUS',
-          r'-': 'MINUS',
-          r'\*': 'MULTIPLY',
-          r'/': 'DIVIDE',
-          r'\*\*': 'POWER',
-          r'=': 'ASSIGN',
-          r'==': 'EQUALS',
-          r'!=': 'NOTEQUALS',
-          r'<': 'LESSTHAN',
-          r'>': 'GREATERTHAN',
-          r'<=': 'LESSTHANOREQUALS',
-          r'>=': 'GREATERTHANOREQUALS',
-          r'\d+(\.\d+)?': 'NUMBER',
-          r'[a-zA-Z_]\w*': 'IDENTIFIER',
-          r'\s+': 'WHITESPACE'
-      }
-
-  def tokenize(self, input_string):
-      self.input_string = input_string
-      self.tokens_list = []
-      while self.input_string:
-          match = None
-          for pattern, token_type in self.tokens.items():
-              regex = re.compile(pattern)
-              match = regex.match(self.input_string)
-              if match:
-                  text = match.group(0)
-                  self.tokens_list.append((text, token_type))
-                  self.input_string = self.input_string[len(text):]
-                  break
-          if not match:
-              raise ValueError(f'Invalid character: {self.input_string[0]}')
-      return self.tokens_list
+      r'\bif\b': 'IF',
+      r'\belse\b': 'ELSE'
+      r'\bwhile\b': 'WHILE'
+  }
 ```
-#### Let's dive deeper.
-```
-def __init__(self) -> object:
-      self.input_string = None
-      self.tokens_list = None
-      self.tokens = {
-          r'\bif\b': 'IF',
-          r'\belse\b': 'ELSE',
-          r'\bwhile\b': 'WHILE',
-          r'\btrue\b': 'TRUE',
-          r'\bfalse\b': 'FALSE',
-          r'\bnot\b': 'NOT',
-          r'\bor\b': 'OR',
-          r'\band\b': 'AND',
-          r'\(': 'LPAREN',
-          r'\)': 'RPAREN',
-          r'\{': 'LBRACE',
-          r'\}': 'RBRACE',
-          r';': 'SEMICOLON',
-          r'\+': 'PLUS',
-          r'-': 'MINUS',
-          r'\*': 'MULTIPLY',
-          r'/': 'DIVIDE',
-          r'\*\*': 'POWER',
-          r'=': 'ASSIGN',
-          r'==': 'EQUALS',
-          r'!=': 'NOTEQUALS',
-          r'<': 'LESSTHAN',
-          r'>': 'GREATERTHAN',
-          r'<=': 'LESSTHANOREQUALS',
-          r'>=': 'GREATERTHANOREQUALS',
-          r'\d+(\.\d+)?': 'NUMBER',
-          r'[a-zA-Z_]\w*': 'IDENTIFIER',
-          r'\s+': 'WHITESPACE'
-      }
-```
-Here I initialized the Lexer and defined the tokens for the lexer.
-###
 #### The tokenizing function
 ```
 def tokenize(self, input_string):
@@ -131,6 +46,7 @@ def tokenize(self, input_string):
           raise ValueError(f'Invalid character: {self.input_string[0]}')
   return self.tokens_list
 ```
+#### Let's dive deeper.
 #### The function takes a string to be tokenized
 ```
 def tokenize(self, input_string):
@@ -184,15 +100,32 @@ on the *expression* inputted by the user.
 The **tokenize()** method breaks the input string down into a list of individual tokens using the regular expressions defined in the tokens dictionary, and returns the resulting list of tuples.
 Finally, **print(Lexer().tokenize(expression))** prints the resulting list of tokens to the console.
 
-## Results
-![img.png](../images/lab3_1.png)
-![img.png](../images/lab3_2.png)
-![img.png](../images/lab3__1.png)
-![img.png](../images/lab3_3.png)
-![img.png](../images/lab3__2.png)
-![img.png](../images/lab3_4.png)
-![img.png](../images/lab3__3.png)
-![img.png](../images/lab3_5.png)
-![img.png](../images/lab3__4.png)
-![img.png](../images/lab3_6.png)
-![img.png](../images/lab3__5.png)
+## Results:
+Enter expression to be tokenizer x = y * 2;
+
+
+Your expression tokenized:
+
+[('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('y', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('*', 'MULTIPLY'), (' ', 'WHITESPACE'), ('2', 'NUMBER'), (';', 'SEMICOLON')]
+
+First expression: if (x <= 5) { y = x * 2; } else { y = x / 2; }
+
+[('if', 'IF'), (' ', 'WHITESPACE'), ('(', 'LPAREN'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('<', 'LESSTHAN'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('5', 'NUMBER'), (')', 'RPAREN'), (' ', 'WHITESPACE'), ('{', 'LBRACE'), (' ', 'WHITESPACE'), ('y', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('*', 'MULTIPLY'), (' ', 'WHITESPACE'), ('2', 'NUMBER'), (';', 'SEMICOLON'), (' ', 'WHITESPACE'), ('}', 'RBRACE'), (' ', 'WHITESPACE'), ('else', 'ELSE'), (' ', 'WHITESPACE'), ('{', 'LBRACE'), (' ', 'WHITESPACE'), ('y', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('/', 'DIVIDE'), (' ', 'WHITESPACE'), ('2', 'NUMBER'), (';', 'SEMICOLON'), (' ', 'WHITESPACE'), ('}', 'RBRACE')]
+
+
+Second expression: while (x > 0) { x = x - 1; }:
+
+[('while', 'WHILE'), (' ', 'WHITESPACE'), ('(', 'LPAREN'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('>', 'GREATERTHAN'), (' ', 'WHITESPACE'), ('0', 'NUMBER'), (')', 'RPAREN'), (' ', 'WHITESPACE'), ('{', 'LBRACE'), (' ', 'WHITESPACE'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('x', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('-', 'MINUS'), (' ', 'WHITESPACE'), ('1', 'NUMBER'), (';', 'SEMICOLON'), (' ', 'WHITESPACE'), ('}', 'RBRACE')]
+
+Third expression: z = (true and false) or not true;:
+
+[('z', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('(', 'LPAREN'), ('true', 'TRUE'), (' ', 'WHITESPACE'), ('and', 'AND'), (' ', 'WHITESPACE'), ('false', 'FALSE'), (')', 'RPAREN'), (' ', 'WHITESPACE'), ('or', 'OR'), (' ', 'WHITESPACE'), ('not', 'NOT'), (' ', 'WHITESPACE'), ('true', 'TRUE'), (';', 'SEMICOLON')]
+
+Forth expression: a != b;:
+
+[('a', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('!=', 'NOTEQUALS'), (' ', 'WHITESPACE'), ('b', 'IDENTIFIER'), (';', 'SEMICOLON')]
+
+Fifth expression: you = cool;:
+
+[('you', 'IDENTIFIER'), (' ', 'WHITESPACE'), ('=', 'ASSIGN'), (' ', 'WHITESPACE'), ('cool', 'IDENTIFIER'), (';', 'SEMICOLON')]
+

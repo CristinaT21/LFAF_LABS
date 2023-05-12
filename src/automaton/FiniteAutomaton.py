@@ -19,7 +19,7 @@ class FiniteAutomaton:
         return q in self.F
 
     def to_regular_grammar(self):
-        from lab_1.grammar.Grammar import Grammar
+        from src.grammar.Grammar import Grammar
 
         V = set(self.Q)  # set of variables
         VN = {f"A{i}" for i in range(len(self.Q))}  # set of variables for the regular grammar
