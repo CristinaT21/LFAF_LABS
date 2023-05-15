@@ -24,13 +24,13 @@ class Lexer:
             r'\*': 'MULTIPLY',
             r'/': 'DIVIDE',
             r'\*\*': 'POWER',
-            r'=': 'ASSIGN',
             r'==': 'EQUALS',
+            r'=': 'ASSIGN',
             r'!=': 'NOTEQUALS',
-            r'<': 'LESSTHAN',
-            r'>': 'GREATERTHAN',
             r'<=': 'LESSTHANOREQUALS',
             r'>=': 'GREATERTHANOREQUALS',
+            r'<': 'LESSTHAN',
+            r'>': 'GREATERTHAN',
             r'\d+(\.\d+)?': 'NUMBER',
             r'[a-zA-Z_]\w*': 'IDENTIFIER',
             r'\s+': 'WHITESPACE'
@@ -51,4 +51,5 @@ class Lexer:
                     break
             if not match:
                 raise ValueError(f'Invalid character: {self.input_string[0]}')
+        self.tokens_list.append((' ', 'EOF'))
         return self.tokens_list

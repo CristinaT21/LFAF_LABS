@@ -3,6 +3,7 @@ from src.automaton.FiniteAutomaton import FiniteAutomaton
 from automathon import DFA
 from PIL import Image
 from src.lexer.lexer import Lexer
+from src.parser.parser import Parser
 
 # Define the grammar
 
@@ -124,5 +125,15 @@ if __name__ == '__main__':
             print('Eliminate Nonproductive Symbols', g.P)
             g.eliminateLongProductions()
             print('Eliminate Long Productions', g.P)
+    elif lab_no == 5:
+        # lab 3
+        expression = input("Enter expression to be tokenized and parsed: ")
+        # example: 'if (x < 10) { y = x * 5; }'
+        tokens = Lexer().tokenize(expression)
+        print(tokens)
+        print('Your expression parsed:')
+        parser = Parser(tokens).parse()
+        print(parser.print_tree())
+
     else:
         print("Try the number 1 up to 4.")
